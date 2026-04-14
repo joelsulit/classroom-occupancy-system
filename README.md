@@ -13,3 +13,4 @@ This repository contains a scaffold for a web-based classroom occupancy monitori
 - Local development database is SQLite.
 - Deployment may target PostgreSQL.
 - This scaffold contains only the initial file structure and placeholders.
+git add .
