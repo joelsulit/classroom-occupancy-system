@@ -5,25 +5,34 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def get_database_url():
+
+    return (
+        os.getenv("SQLALCHEMY_DATABASE_URI")
+        or os.getenv("DATABASE_URL")
+        or "sqlite:///app.db"  
+    )
+
+
 class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key-change-in-prod")
+    SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key-change-in-prod")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "jwt-secret-key-change-in-prod")
+
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "jwt-secret-key-change-in-prod")
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=8)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=7)
+
+    SQLALCHEMY_DATABASE_URI = get_database_url()
 
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
-    SQLALCHEMY_ECHO = False  # Set True to log SQL queries during dev
+    SQLALCHEMY_ECHO = False
 
 
 class ProductionConfig(Config):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
 
-    # Heroku/Railway uses 'postgres://' — SQLAlchemy requires 'postgresql://'
     @classmethod
     def init_app(cls, app):
         uri = cls.SQLALCHEMY_DATABASE_URI or ""
@@ -33,7 +42,7 @@ class ProductionConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = os.getenv("TEST_DATABASE_URL", "sqlite:///test.db")
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=5)
 
 

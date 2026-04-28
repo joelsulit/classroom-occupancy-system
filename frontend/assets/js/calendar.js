@@ -60,6 +60,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         toggleBtn.textContent = formatted;
         calendarContainer.style.display = "none";
+
+        // Emit ISO date for dashboard filtering
+        const isoDate = `${year}-${String(month + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`;
+        if (typeof onDateSelected === "function") {
+          onDateSelected(formatted, isoDate);
+        }
       });
 
       daysContainer.appendChild(dayDiv);
