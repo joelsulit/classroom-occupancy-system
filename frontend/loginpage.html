@@ -1,63 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>PLV RESERVATION</title>
+    <title>PLV CSMS — Login</title>
     <link rel="stylesheet" href="assets/css/loginpage.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+      .form-error {
+        display: none;
+        background: #fee2e2;
+        color: #991b1b;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 13px;
+        margin-bottom: 12px;
+      }
+      .tab-row {
+        display: flex;
+        border-bottom: 2px solid #e5e7eb;
+        margin-bottom: 24px;
+      }
+      .tab-btn {
+        flex: 1;
+        padding: 10px;
+        background: none;
+        border: none;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        color: #9ca3af;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+        font-family: 'Poppins', sans-serif;
+      }
+      .tab-btn.active {
+        color: #043AA3;
+        border-bottom-color: #043AA3;
+      }
+    </style>
 </head>
 <body>
 
-      <div class="menu">
-        <div class="logo">
-          CSMS
-          <label for="menu"></label>
-        </div>
-      </div>
-
-    <!-- LEFT IMAGE -->
-<div class="container">
-
-  <div class="left">
-    <img src="assets/img/plv maysan 1.png" alt="Building">
+  <div class="menu">
+    <div class="logo">CSMS</div>
   </div>
 
-    <!-- RIGHT FORM -->
+  <div class="container">
+    <div class="left">
+      <img src="assets/img/plv maysan 1.png" alt="PLV Building">
+    </div>
+
     <div class="right">
       <div class="form-box">
 
-        <h1>Get Started Now</h1>
-        <p>Please log into your account to continue</p>
+        <!-- TS -->
+        <div class="tab-row">
+          <button class="tab-btn active" id="tabLogin"    onclick="switchTab('login')">Log In</button>
+          <button class="tab-btn"        id="tabRegister" onclick="switchTab('register')">Register</button>
+        </div>
 
-        <form>
-          <label>Name</label>
-          <input type="text" placeholder="Enter your name">
+        <!-- ── LOGSEC ── -->
+        <div id="loginSection">
+          <h1>Welcome Back</h1>
+          <p>Please log in to your account</p>
 
-          <label>Email address</label>
-          <input type="email" placeholder="example@email.com">
+          <div id="loginError" class="form-error"></div>
+
+          <form onsubmit="return false;">
+            <label>Email Address</label>
+            <input type="email" id="loginEmail" placeholder="example@plv.edu.ph">
 
             <div class="password-label">
               <span>Password</span>
-              <a href="#" class="forgot">Forget Password?</a>
+              <a href="#" class="forgot">Forgot Password?</a>
             </div>
-            <input type="password" placeholder="********">
+            <input type="password" id="loginPassword" placeholder="••••••••">
 
-            <div class="checkbox">
-              <input type="checkbox">
-              <span>I agree to the <a href="#">Terms & Privacy</a></span>
-            </div>
-            <a href="dashboard.html">
-              <button type="button" class="submit-btn">Log in</button>
-            </a>
-          <p class="register">
-            Don't have an account? <a href="#">Register Now</a>
-          </p>
-        </form>
+            <button type="button" class="submit-btn" id="loginBtn">Log In</button>
+
+            <p class="register">
+              Don't have an account?
+              <a href="#" id="toRegister">Register Now</a>
+            </p>
+          </form>
+        </div>
+
+        <!-- ── REGSEC ── -->
+        <div id="registerSection" style="display:none;">
+          <h1>Create Account</h1>
+          <p>Fill in your details to get started</p>
+
+          <div id="registerError" class="form-error"></div>
+
+          <form onsubmit="return false;">
+            <label>Full Name</label>
+            <input type="text" id="regName" placeholder="Juan Dela Cruz">
+
+            <label>School Email</label>
+            <input type="email" id="regEmail" placeholder="student@plv.edu.ph">
+
+            <label>Student ID</label>
+            <input type="text" id="regStudentId" placeholder="2021-00001">
+
+            <label>Course / Section</label>
+            <input type="text" id="regCourseSection" placeholder="BSIT-3A">
+
+            <label>Password</label>
+            <input type="password" id="regPassword" placeholder="Min. 8 chars, 1 uppercase, 1 number">
+
+            <button type="button" class="submit-btn" id="registerBtn">Register</button>
+
+            <p class="register">
+              Already have an account?
+              <a href="#" id="toLogin">Log In</a>
+            </p>
+          </form>
+        </div>
+
       </div>
     </div>
-</div>
+  </div>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    function switchTab(tab) {
+      const loginSection    = document.getElementById("loginSection");
+      const registerSection = document.getElementById("registerSection");
+      const tabLogin        = document.getElementById("tabLogin");
+      const tabRegister     = document.getElementById("tabRegister");
+
+      if (tab === "login") {
+        loginSection.style.display    = "block";
+        registerSection.style.display = "none";
+        tabLogin.classList.add("active");
+        tabRegister.classList.remove("active");
+      } else {
+        loginSection.style.display    = "none";
+        registerSection.style.display = "block";
+        tabLogin.classList.remove("active");
+        tabRegister.classList.add("active");
+      }
+    }
+  </script>
 </body>
 </html>
-

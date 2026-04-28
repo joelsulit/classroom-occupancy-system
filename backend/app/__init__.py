@@ -3,6 +3,8 @@ from flask import Flask, jsonify
 from app.config import config
 from app.extensions import db, migrate, jwt, cors
 from app.routes.auth import is_token_revoked
+from dotenv import load_dotenv
+load_dotenv()
 
 
 def create_app(config_name: str = None) -> Flask:
