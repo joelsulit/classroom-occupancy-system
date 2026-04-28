@@ -90,8 +90,8 @@ def login():
     if not user.is_active:
         return error_response("Your account has been deactivated. Contact the administrator.", 403)
 
-    access_token = create_access_token(identity=user.id)
-    refresh_token = create_refresh_token(identity=user.id)
+    access_token = create_access_token(identity=str(user.id))
+    refresh_token = create_refresh_token(identity=str(user.id))
 
     return success_response(
         {
@@ -111,7 +111,7 @@ def refresh():
     if not user or not user.is_active:
         return error_response("Account inactive.", 403)
 
-    access_token = create_access_token(identity=user_id)
+    access_token = create_access_token(identity=str(user_id))
     return success_response({"access_token": access_token}, "Token refreshed.")
 
 
@@ -156,4 +156,7 @@ def update_me():
 
 def is_token_revoked(jwt_header, jwt_payload):
     """Callback for JWTManager token revocation check."""
-    return jwt_payload["jti"] in _blocklist
+    jti = jwt_payload.get("jti")
+    if jti is None:
+        return False
+    return jti in _blocklist
